@@ -111,4 +111,19 @@ public class LinkedListDeque<Item> {
         }
         return node.item;
     }
+
+    private Item getRecursive(int index, Node<Item> node) {
+        if (index == 0) {
+            return node.item;
+        } else {
+            return getRecursive(index - 1, node.next);
+        }
+    }
+
+    public Item getRecursive(int index) {
+        if (index > size() - 1) {
+            return null;
+        }
+        return getRecursive(index, sentinel.next);
+    }
 }
