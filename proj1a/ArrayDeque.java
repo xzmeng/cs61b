@@ -1,68 +1,54 @@
-public class ArrayDeque<Item> {
+public class ArrayDeque<T> {
     private int size;
     private int capacity;
-    private Item[] items;
+    private T[] items;
     private int nextFirst;
     private int nextLast;
 
     public ArrayDeque() {
         size = 0;
         capacity = 8;
-        items = (Item[]) new Object[capacity];
+        items = (T[]) new Object[capacity];
         nextFirst = capacity - 1;
         nextLast = 0;
     }
 
-    /**
-     * helper methods
-     */
+    /** full */
     private boolean isFull() {
         return size() == capacity;
     }
-
+    /** sparse */
     private boolean isSparse() {
         return (double) size / (double) capacity < 0.25
                 && capacity >= 16;
     }
-
-    private void upCapacity() {
-        int newCapacity = capacity * 2;
-        Item[] newItems = (Item[]) new Object[newCapacity];
-        copyItems(items, newItems);
-    }
-
-    private void downCapacity() {
-        int newCapacity = capacity / 2;
-        Item[] newItems = (Item[]) new Object[newCapacity];
-        copyItems(items, newItems);
-    }
-
+    /** Plus i by one circularly */
     private int plusOne(int i) {
         return (i + 1) % capacity;
     }
-
+    /** Minus i by one circularly */
     private int minusOne(int i) {
-        return (i - 1) % capacity;
+        return (i - 1 + capacity) % capacity;
     }
-
-    private void copyItems(Item[] oldItems, Item[] newItems) {
-        int index = plusOne(nextFirst);
-        for (int i = 0; i < capacity; i += 1) {
-            newItems[i] = items[index];
-            index = plusOne(index);
+    private void resize(int capacity) {
+        T[] newItems = (T[]) new Object[capacity];
+        int oldIndex = plusOne(nextFirst);
+        for (int i = 0; i < size; i += 1) {
+            newItems[i] = items[oldIndex];
+            oldIndex = plusOne(oldIndex);
         }
-        capacity = newItems.length;
+        this.capacity = capacity;
         items = newItems;
         nextFirst = capacity - 1;
         nextLast = size;
     }
 
     /**
-     * Adds an item of type Item to the front of the deque.
+     * Adds an item of type T to the front of the deque.
      */
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         if (isFull()) {
-            upCapacity();
+            resize(capacity * 2);
         }
         items[nextFirst] = item;
         nextFirst = minusOne(nextFirst);
@@ -71,11 +57,11 @@ public class ArrayDeque<Item> {
 
 
     /**
-     * Adds an item of type Item to the back of the deque.
+     * Adds an item of type T to the back of the deque.
      */
-    public void addLast(Item item) {
+    public void addLast(T item) {
         if (isFull()) {
-            upCapacity();
+            resize(capacity * 2);
         }
         items[nextLast] = item;
         nextLast = plusOne(nextLast);
@@ -100,46 +86,55 @@ public class ArrayDeque<Item> {
      * Prints the items in the deque from first to last, separated by a space.
      */
     public void printDeque() {
+        for (int i = 0; i < size(); i += 1) {
+            System.out.print(get(i));
+            if (i != size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 
     /**
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      */
-    public Item removeFirst() {
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
         nextFirst = plusOne(nextFirst);
         size -= 1;
-        Item item = items[nextFirst];
+        T toRemove = items[nextFirst];
+        items[nextFirst] = null;
         if (isSparse()) {
-            downCapacity();
+            resize(capacity / 2);
         }
-        return item;
+        return toRemove;
     }
 
 
     /**
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      */
-    public Item removeLast() {
+    public T removeLast() {
         if (size() == 0) {
             return null;
         }
         nextLast = minusOne(nextLast);
         size -= 1;
-        Item item = items[nextLast];
+        T toRemove = items[nextLast];
+        items[nextLast] = null;
         if (isSparse()) {
-            downCapacity();
+            resize(capacity / 2);
         }
-        return item;
+        return toRemove;
     }
 
     /**
      * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null. Must not alter the deque!
      */
-    public Item get(int index) {
+    public T get(int index) {
         return items[(nextFirst + 1 + index) % capacity];
     }
 

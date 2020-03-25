@@ -67,9 +67,9 @@ public class TestLinkedListDeque {
         lld.addLast(2);
         lld.addLast(3);
 
-        assertEquals((int)lld.get(0), 1);
-        assertEquals((int)lld.get(0), 1);
-        assertEquals((int)lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
     }
 
     @Test
@@ -79,9 +79,9 @@ public class TestLinkedListDeque {
         lld.addLast(2);
         lld.addLast(3);
 
-        assertEquals((int)lld.get(0), 1);
-        assertEquals((int)lld.get(0), 1);
-        assertEquals((int)lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
+        assertEquals((int) lld.get(0), 1);
     }
 
     @Test

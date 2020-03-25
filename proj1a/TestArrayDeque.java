@@ -95,4 +95,20 @@ public class TestArrayDeque {
         System.out.println("should be \"1, 2, 3\"");
         System.out.println("----testPrintDeque() end----");
     }
+
+    @Test
+    public void testAll() {
+        ArrayDeque<Integer> ad = new ArrayDeque<>();
+        for (int i = 0; i < 50; i += 1) {
+            ad.addLast(i);
+        }
+        for (int i = 0; i < 20; i += 1) {
+            ad.removeFirst();
+        }
+        for (int i = 0; i < 20; i += 1) {
+            ad.removeLast();
+        }
+        ad.printDeque();
+        System.out.println("should be 20~29");
+    }
 }
