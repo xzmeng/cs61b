@@ -30,14 +30,14 @@ public class ArrayDeque<T> {
     private int minusOne(int i) {
         return (i - 1 + capacity) % capacity;
     }
-    private void resize(int capacity) {
-        T[] newItems = (T[]) new Object[capacity];
+    private void resize(int newCapacity) {
+        T[] newItems = (T[]) new Object[newCapacity];
         int oldIndex = plusOne(nextFirst);
         for (int i = 0; i < size; i += 1) {
             newItems[i] = items[oldIndex];
             oldIndex = plusOne(oldIndex);
         }
-        this.capacity = capacity;
+        capacity = newCapacity;
         items = newItems;
         nextFirst = capacity - 1;
         nextLast = size;
